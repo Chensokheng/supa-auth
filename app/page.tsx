@@ -1,9 +1,10 @@
+import SignUp from "@/components/auth/signup";
 import React from "react";
 
 export default function page() {
 	return (
-		<div>
-			<h1>Home page</h1>
+		<div className="p-5">
+			<SignUp />
 		</div>
 	);
 }
