@@ -14,20 +14,25 @@ export const Layout = () => {
 
 # Installation
 
-1. Download shadcn form component
-
 ```sh copy
-npx shadcn-ui@latest add form
+npx supaauth@latest add --component signup
 ```
 
-2. Download Icons
+This will do:
 
-```sh copy
+1. create `signup.tsx` file for you
+2. It will install all dependencies by running these cmds
+
+```sh
+npx shadcn-ui@latest add form
+npx shadcn-ui@latest add input
 npm i react-icons
 ```
 
-3. Download this component
+## Skip dependencies
+
+If you have all dependencies you can skip it by do this
 
 ```sh copy
-npx supaauth@latest add signup
+npx supaauth@latest add --component signup --skip dep
 ```

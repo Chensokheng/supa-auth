@@ -1,0 +1,17 @@
+# Installation
+
+```sh copy
+npx supaauth@latest init
+```
+
+1. The command will initialize `shadcn` for you, as our components are built on top of shadcn.
+2. It will install the `supabase` package, create the supabase browser and server clients, and set up the supabase .env file for you.
+
+## Update your .env
+
+Add the following lines to your .env file, replacing the placeholders with your Supabase project details:
+
+```sh copy
+NEXT_PUBLIC_SUPABASE_URL=<your_supabase_project_url>
+NEXT_PUBLIC_SUPABASE_ANON_KEY=<your_supabase_anon_key>
+```
