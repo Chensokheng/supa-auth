@@ -15,4 +15,8 @@ export default {
 			return <>{title}</>;
 		},
 	},
+	banner: {
+		key: "beta-release",
+		text: "🎉 Supa Auth is beta verion",
+	},
 };
