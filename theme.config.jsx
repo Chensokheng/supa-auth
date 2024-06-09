@@ -1,8 +1,10 @@
 // eslint-disable-next-line
 export default {
-	logo: <span>My Nextra Documentation</span>,
+	logo: <span>SupaAuth🔓</span>,
+	docsRepositoryBase: "https://github.com/Chensokheng/supa-auth/tree/master",
+
 	project: {
-		link: "https://github.com/shuding/nextra",
+		link: "https://github.com/Chensokheng/supa-auth",
 	},
 	sidebar: {
 		titleComponent({ title, type }) {
