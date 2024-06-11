@@ -27,8 +27,9 @@ import { Input } from "@/components/ui/input";
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { createSupabaseBrowser } from "@/lib/supabase/client";
 import { verifyOtp } from "@/actions/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z
 	.object({
@@ -48,12 +49,14 @@ const FormSchema = z
 		{ message: "Password does't match", path: ["confirm-pass"] }
 	);
 
-export default function SignUp() {
+export default function SignUp({ redirectTo }: { redirectTo: string }) {
 	const [passwordReveal, setPasswordReveal] = useState(false);
 	const [isConfirmed, setIsConfirmed] = useState(false);
 	const [verifyStatus, setVerifyStatus] = useState<string>("");
-	const [otp, setOpt] = useState("");
 	const [isPending, startTransition] = useTransition();
+	const [isSendAgain, startSendAgain] = useTransition();
+
+	const router = useRouter();
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
 		defaultValues: {
@@ -63,26 +66,53 @@ export default function SignUp() {
 		},
 	});
 
-	const sendVerifyEmail = async (data: z.infer<typeof FormSchema>) => {
+	const postEmail = async ({
+		email,
+		password,
+	}: {
+		email: string;
+		password: string;
+	}) => {
 		const requestOptions = {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(data),
+			body: JSON.stringify({ email, password }),
 		};
 		// Send the POST request
 		const res = await fetch("/api/signup", requestOptions);
 		const json = await res.json();
-		console.log(json.properties.email_otp);
-		setOpt(json.properties.email_otp);
-		setIsConfirmed(true);
+		return json;
 	};
 
-	function onSubmit(data: z.infer<typeof FormSchema>) {
-		startTransition(async () => {
-			await sendVerifyEmail(data);
+	const sendVerifyEmail = async (data: z.infer<typeof FormSchema>) => {
+		const json = await postEmail({
+			email: data.email,
+			password: data.password,
 		});
+		if (!json.error) {
+			setIsConfirmed(true);
+		} else {
+			if (json.error.code) {
+				toast.error(json.error.code);
+			} else if (json.error.message) {
+				toast.error(json.error.message);
+			}
+		}
+	};
+
+	const inputOptClass = cn({
+		" border-green-500": verifyStatus === "success",
+		" border-red-500": verifyStatus === "failed",
+	});
+
+	function onSubmit(data: z.infer<typeof FormSchema>) {
+		if (!isPending) {
+			startTransition(async () => {
+				await sendVerifyEmail(data);
+			});
+		}
 	}
 
 	return (
@@ -217,6 +247,7 @@ export default function SignUp() {
 					</div>
 				</form>
 			</Form>
+			{/* verify email */}
 			<div
 				className={cn(
 					`w-full inline-block h-80 text-wrap align-top  transform transition-all space-y-3`,
@@ -237,92 +268,78 @@ export default function SignUp() {
 					</p>
 
 					<InputOTP
+						pattern={REGEXP_ONLY_DIGITS}
 						id="input-otp"
 						maxLength={6}
 						onChange={async (value) => {
 							if (value.length === 6) {
+								document.getElementById("input-otp")?.blur();
 								const res = await verifyOtp({
 									email: form.getValues("email"),
 									otp: value,
 									type: "email",
 								});
-								const { data, error } = JSON.parse(res);
+								const { error } = JSON.parse(res);
 								if (error) {
 									setVerifyStatus("failed");
 								} else {
 									setVerifyStatus("success");
+									router.push(redirectTo);
 								}
-								document.getElementById("input-otp")?.blur();
 							}
 						}}
 					>
 						<InputOTPGroup>
-							<InputOTPSlot
-								index={0}
-								className={cn({
-									" border-green-500":
-										verifyStatus === "success",
-									" border-red-500":
-										verifyStatus === "failed",
-								})}
-							/>
-							<InputOTPSlot
-								index={1}
-								className={cn({
-									" border-green-500":
-										verifyStatus === "success",
-									" border-red-500":
-										verifyStatus === "failed",
-								})}
-							/>
-							<InputOTPSlot
-								index={2}
-								className={cn({
-									" border-green-500":
-										verifyStatus === "success",
-									" border-red-500":
-										verifyStatus === "failed",
-								})}
-							/>
+							<InputOTPSlot index={0} className={inputOptClass} />
+							<InputOTPSlot index={1} className={inputOptClass} />
+							<InputOTPSlot index={2} className={inputOptClass} />
 						</InputOTPGroup>
 						<InputOTPSeparator />
 						<InputOTPGroup>
-							<InputOTPSlot
-								index={3}
-								className={cn({
-									" border-green-500 ring-green-500":
-										verifyStatus === "success",
-									" border-red-500":
-										verifyStatus === "failed",
-								})}
-							/>
+							<InputOTPSlot index={3} className={inputOptClass} />
 							<InputOTPSlot
 								index={4}
-								className={cn({
-									" border-green-500":
-										verifyStatus === "success",
-									" border-red-500":
-										verifyStatus === "failed",
-								})}
+								className={cn(inputOptClass)}
 							/>
 							<InputOTPSlot
 								index={5}
-								className={cn({
-									" border-green-500":
-										verifyStatus === "success",
-									" border-red-500":
-										verifyStatus === "failed",
-								})}
+								className={cn(inputOptClass)}
 							/>
 						</InputOTPGroup>
 					</InputOTP>
-					<div className="text-sm">
-						<p>
-							{"Didn't work?"}{" "}
-							<span className="text-blue-400">
-								Send me another code.
-							</span>
-						</p>
+					<div className="text-sm flex gap-2">
+						<p>{"Didn't work?"} </p>
+						<span
+							className="text-blue-400 cursor-pointer hover:underline transition-all flex items-center gap-2 "
+							onClick={async () => {
+								if (!isSendAgain) {
+									startSendAgain(async () => {
+										const json = await postEmail({
+											email: form.getValues("email"),
+											password:
+												form.getValues("password"),
+										});
+
+										if (json.error) {
+											toast.error("Fail to resend email");
+										} else {
+											toast.success(
+												"Please check your email."
+											);
+										}
+									});
+								}
+							}}
+						>
+							<AiOutlineLoading3Quarters
+								className={`${
+									!isSendAgain
+										? "hidden"
+										: "block animate-spin"
+								}`}
+							/>
+							Send me another code.
+						</span>
 					</div>
 					<Button
 						type="submit"

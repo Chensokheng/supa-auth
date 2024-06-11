@@ -1,5 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { protectedPaths, authPaths } from "@/lib/constants";
 
 export async function updateSession(request: NextRequest) {
 	let response = NextResponse.next({
@@ -55,7 +56,18 @@ export async function updateSession(request: NextRequest) {
 	);
 
 	const user = await supabase.auth.getUser();
-	console.log(user);
-
-	return response;
+	const url = new URL(request.url);
+	if (user.data.user?.id) {
+		if (authPaths.includes(url.pathname)) {
+			return NextResponse.redirect(new URL("/", request.url));
+		}
+		return response;
+	} else {
+		if (protectedPaths.includes(url.pathname)) {
+			return NextResponse.redirect(
+				new URL("/register?next=" + url.pathname, request.url)
+			);
+		}
+		return response;
+	}
 }

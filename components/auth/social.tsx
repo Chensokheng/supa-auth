@@ -24,7 +24,7 @@ export default function Social({ redirectTo }: { redirectTo: string }) {
 			<Button
 				className="w-full h-8 flex items-center gap-5"
 				variant="outline"
-				// onClick={()=>loginWithProvider("github")}
+				onClick={() => loginWithProvider("github")}
 			>
 				<IoLogoGithub />
 				Github
@@ -32,7 +32,7 @@ export default function Social({ redirectTo }: { redirectTo: string }) {
 			<Button
 				className="w-full h-8 flex items-center gap-2"
 				variant="outline"
-				// onClick={()=>loginWithProvider("google")}
+				onClick={() => loginWithProvider("google")}
 			>
 				<FcGoogle />
 				Google
