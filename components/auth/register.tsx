@@ -6,9 +6,12 @@ import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 
 export default function Register() {
-	const searchParams = useSearchParams();
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
 
-	const next = searchParams?.get("next");
+	// Get the value of the 'next' parameter
+	const next = urlParams.get("next");
+	const verify = urlParams.get("verify");
 
 	return (
 		<div className="w-full sm:w-[26rem] shadow sm:p-5  border dark:border-zinc-800 rounded-md">

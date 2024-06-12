@@ -1,5 +1,3 @@
-"use client";
-
 import SignIn from "@/components/auth/signin";
 import React from "react";
 

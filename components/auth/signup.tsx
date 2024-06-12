@@ -29,7 +29,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { verifyOtp } from "@/actions/auth";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const FormSchema = z
 	.object({
@@ -50,12 +50,18 @@ const FormSchema = z
 	);
 
 export default function SignUp({ redirectTo }: { redirectTo: string }) {
+	const queryString = window.location.search;
+	const urlParams = new URLSearchParams(queryString);
+
+	const verify = urlParams.get("verify");
+	const existEmail = urlParams.get("email");
+
 	const [passwordReveal, setPasswordReveal] = useState(false);
-	const [isConfirmed, setIsConfirmed] = useState(false);
+	const [isConfirmed, setIsConfirmed] = useState(verify === "true");
 	const [verifyStatus, setVerifyStatus] = useState<string>("");
 	const [isPending, startTransition] = useTransition();
 	const [isSendAgain, startSendAgain] = useTransition();
-
+	const pathname = usePathname();
 	const router = useRouter();
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -92,6 +98,11 @@ export default function SignUp({ redirectTo }: { redirectTo: string }) {
 			password: data.password,
 		});
 		if (!json.error) {
+			router.replace(
+				(pathname || "/") +
+					"?verify=true&email=" +
+					form.getValues("email")
+			);
 			setIsConfirmed(true);
 		} else {
 			if (json.error.code) {
@@ -270,7 +281,9 @@ export default function SignUp({ redirectTo }: { redirectTo: string }) {
 					<p className="text-center text-sm">
 						{" A verification code has been sent to "}
 						<span className="font-bold">
-							{form.getValues("email")}
+							{verify === "true"
+								? existEmail
+								: form.getValues("email")}
 						</span>
 					</p>
 
@@ -321,18 +334,32 @@ export default function SignUp({ redirectTo }: { redirectTo: string }) {
 							onClick={async () => {
 								if (!isSendAgain) {
 									startSendAgain(async () => {
-										const json = await postEmail({
-											email: form.getValues("email"),
-											password:
-												form.getValues("password"),
-										});
+										if (!form.getValues("password")) {
+											const json = await postEmail({
+												email: form.getValues("email"),
+												password:
+													form.getValues("password"),
+											});
 
-										if (json.error) {
-											toast.error("Fail to resend email");
+											if (json.error) {
+												toast.error(
+													"Fail to resend email"
+												);
+											} else {
+												toast.success(
+													"Please check your email."
+												);
+											}
 										} else {
-											toast.success(
-												"Please check your email."
+											router.replace(
+												pathname || "/register"
 											);
+											form.setValue(
+												"email",
+												existEmail || ""
+											);
+											form.setValue("password", "");
+											setIsConfirmed(false);
 										}
 									});
 								}

@@ -3,7 +3,9 @@ import ThemeProvider from "../components/theme-provider";
 export default function App({ Component, pageProps }) {
 	return (
 		<ThemeProvider>
-			<Component {...pageProps} />
+			<main className="text-normal">
+				<Component {...pageProps} />
+			</main>
 		</ThemeProvider>
 	);
 }

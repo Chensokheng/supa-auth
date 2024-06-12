@@ -2,15 +2,12 @@
 import React, { useState, useTransition } from "react";
 import Social from "./social";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-import { Button } from "@/components/ui/button";
 import {
 	Form,
 	FormControl,
@@ -20,10 +17,9 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
-import { createSupabaseBrowser } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Button } from "../button";
 
 const FormSchema = z.object({
 	email: z.string().email({ message: "Invalid Email Address" }),
@@ -31,12 +27,6 @@ const FormSchema = z.object({
 });
 
 export default function SignIn() {
-	const queryString = window.location.search;
-	const urlParams = new URLSearchParams(queryString);
-
-	// Get the value of the 'next' parameter
-	const next = urlParams.get("next");
-
 	return (
 		<div className="w-full sm:w-[26rem] shadow sm:p-5  border dark:border-zinc-800 rounded-md">
 			<div className="p-5 space-y-5">
@@ -53,13 +43,13 @@ export default function SignIn() {
 						Welcome back! Please sign in to continue
 					</p>
 				</div>
-				<Social redirectTo={next || "/"} />
+				<Social redirectTo={"/"} />
 				<div className="flex items-center gap-5">
 					<div className="flex-1 h-[0.5px] w-full bg-zinc-400 dark:bg-zinc-800"></div>
 					<div className="text-sm">or</div>
 					<div className="flex-1 h-[0.5px] w-full bg-zinc-400 dark:bg-zinc-800"></div>
 				</div>
-				<SignInForm redirectTo={next || "/"} />
+				<SignInForm redirectTo={"/"} />
 			</div>
 		</div>
 	);
@@ -67,8 +57,6 @@ export default function SignIn() {
 
 export function SignInForm({ redirectTo }: { redirectTo: string }) {
 	const [passwordReveal, setPasswordReveal] = useState(false);
-	const [isPending, startTransition] = useTransition();
-	const router = useRouter();
 
 	const form = useForm<z.infer<typeof FormSchema>>({
 		resolver: zodResolver(FormSchema),
@@ -78,22 +66,7 @@ export function SignInForm({ redirectTo }: { redirectTo: string }) {
 		},
 	});
 
-	function onSubmit(data: z.infer<typeof FormSchema>) {
-		const supabase = createSupabaseBrowser();
-		if (!isPending) {
-			startTransition(async () => {
-				const { error } = await supabase.auth.signInWithPassword({
-					email: data.email,
-					password: data.password,
-				});
-				if (error) {
-					toast.error(error.message);
-				} else {
-					router.push(redirectTo);
-				}
-			});
-		}
-	}
+	function onSubmit(data: z.infer<typeof FormSchema>) {}
 
 	return (
 		<Form {...form}>
@@ -157,11 +130,6 @@ export function SignInForm({ redirectTo }: { redirectTo: string }) {
 					type="submit"
 					className="w-full h-8 bg-indigo-500 hover:bg-indigo-600 transition-all text-white flex items-center gap-2"
 				>
-					<AiOutlineLoading3Quarters
-						className={cn(
-							!isPending ? "hidden" : "block animate-spin"
-						)}
-					/>
 					Continue
 				</Button>
 			</form>
