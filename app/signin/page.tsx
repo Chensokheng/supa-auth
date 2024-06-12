@@ -1,11 +1,12 @@
 "use client";
-import Register from "@/components/auth/register";
+
+import SignIn from "@/components/auth/signin";
 import React from "react";
 
 export default function page() {
 	return (
 		<div className="flex items-center justify-center h-screen">
-			<Register />
+			<SignIn />
 		</div>
 	);
 }

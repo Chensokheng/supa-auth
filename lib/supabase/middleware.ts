@@ -57,6 +57,7 @@ export async function updateSession(request: NextRequest) {
 
 	const user = await supabase.auth.getUser();
 	const url = new URL(request.url);
+	const next = url.searchParams.get("next");
 	if (user.data.user?.id) {
 		if (authPaths.includes(url.pathname)) {
 			return NextResponse.redirect(new URL("/", request.url));
@@ -65,7 +66,7 @@ export async function updateSession(request: NextRequest) {
 	} else {
 		if (protectedPaths.includes(url.pathname)) {
 			return NextResponse.redirect(
-				new URL("/register?next=" + url.pathname, request.url)
+				new URL("/signin?next=" + (next || url.pathname), request.url)
 			);
 		}
 		return response;

@@ -240,7 +240,14 @@ export default function SignUp({ redirectTo }: { redirectTo: string }) {
 					<div className="text-center text-sm">
 						<h1>
 							Already have account?{" "}
-							<Link href="/signin" className="text-blue-400">
+							<Link
+								href={
+									redirectTo
+										? `/signin?next=` + redirectTo
+										: "/signin"
+								}
+								className="text-blue-400"
+							>
 								Signin
 							</Link>
 						</h1>
