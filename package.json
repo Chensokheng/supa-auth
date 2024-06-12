@@ -1,42 +1,48 @@
 {
-  "name": "supa-auth",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@hookform/resolvers": "^3.6.0",
-    "@radix-ui/react-label": "^2.0.2",
-    "@radix-ui/react-slot": "^1.0.2",
-    "@supabase/ssr": "^0.3.0",
-    "@supabase/supabase-js": "^2.43.4",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "lucide-react": "^0.383.0",
-    "next": "14.2.3",
-    "next-themes": "^0.3.0",
-    "nextra": "^2.13.4",
-    "nextra-theme-docs": "^2.13.4",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-hook-form": "^7.51.5",
-    "react-icons": "^5.2.1",
-    "tailwind-merge": "^2.3.0",
-    "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
-  }
+	"name": "supa-auth",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"lint": "next lint",
+		"email": "email dev"
+	},
+	"dependencies": {
+		"@hookform/resolvers": "^3.6.0",
+		"@radix-ui/react-label": "^2.0.2",
+		"@radix-ui/react-slot": "^1.0.2",
+		"@react-email/components": "0.0.19",
+		"@supabase/ssr": "^0.3.0",
+		"@supabase/supabase-js": "^2.43.4",
+		"class-variance-authority": "^0.7.0",
+		"clsx": "^2.1.1",
+		"input-otp": "^1.2.4",
+		"lucide-react": "^0.383.0",
+		"next": "14.2.3",
+		"next-themes": "^0.3.0",
+		"nextra": "^2.13.4",
+		"nextra-theme-docs": "^2.13.4",
+		"react": "^18",
+		"react-dom": "^18",
+		"react-email": "2.1.4",
+		"react-hook-form": "^7.51.5",
+		"react-icons": "^5.2.1",
+		"resend": "^3.2.0",
+		"sonner": "^1.5.0",
+		"tailwind-merge": "^2.3.0",
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^3.23.8"
+	},
+	"devDependencies": {
+		"@types/node": "^20",
+		"@types/react": "^18",
+		"@types/react-dom": "^18",
+		"eslint": "^8",
+		"eslint-config-next": "14.2.3",
+		"postcss": "^8",
+		"tailwindcss": "^3.4.1",
+		"typescript": "^5"
+	}
 }
