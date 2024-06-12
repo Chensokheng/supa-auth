@@ -50,7 +50,8 @@ const FormSchema = z
 	);
 
 export default function SignUp({ redirectTo }: { redirectTo: string }) {
-	const queryString = window.location.search;
+	const queryString =
+		typeof window !== "undefined" ? window.location.search : "";
 	const urlParams = new URLSearchParams(queryString);
 
 	const verify = urlParams.get("verify");

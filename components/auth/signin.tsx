@@ -31,7 +31,8 @@ const FormSchema = z.object({
 });
 
 export default function SignIn() {
-	const queryString = window.location.search;
+	const queryString =
+		typeof window !== "undefined" ? window?.location.search : "";
 	const urlParams = new URLSearchParams(queryString);
 
 	// Get the value of the 'next' parameter
