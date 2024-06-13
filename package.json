@@ -6,8 +6,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"email": "email dev"
+		"email": "email dev",
+		"biome": "biome check",
+		"biome:write": "biome check --write"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.6.0",
