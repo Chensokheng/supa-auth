@@ -6,8 +6,9 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"email": "email dev"
+		"email": "email dev",
+		"biome": "biome check",
+		"biome:write": "biome check --write"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.6.0",
@@ -36,11 +37,10 @@
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
+		"@biomejs/biome": "^1.8.1",
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
-		"eslint": "^8",
-		"eslint-config-next": "14.2.3",
 		"postcss": "^8",
 		"tailwindcss": "^3.4.1",
 		"typescript": "^5"
