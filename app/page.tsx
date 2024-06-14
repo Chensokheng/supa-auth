@@ -1,3 +1,4 @@
+import UserProfile from "@/components/auth/user-profile";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import React from "react";
@@ -9,6 +10,7 @@ export default function page() {
 			<Link href="/installation">
 				<Button variant={"link"}>Docs</Button>
 			</Link>
+			<UserProfile />
 		</div>
 	);
 }
