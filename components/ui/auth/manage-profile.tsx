@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { CircleUser } from "lucide-react";
 import { cn } from "@/lib/utils";
-import useUser from "@/app/hook/useUser";
 import Avatar from "./avatar";
 import { MdOutlineMarkEmailRead } from "react-icons/md";
 import { FaGithub, FaDiscord } from "react-icons/fa";
@@ -28,11 +27,7 @@ export const authProvider = {
 
 export default function ManageProfile() {
 	const [activeTab, setActiveTab] = useState("profile");
-	const { data } = useUser();
-
-	const AuthProviderIcon = data?.app_metadata.provider
-		? authProvider[data?.app_metadata.provider as IconKey].Icon
-		: MdOutlineMarkEmailRead;
+	const AuthProviderIcon = MdOutlineMarkEmailRead;
 
 	return (
 		<Dialog>
@@ -74,7 +69,7 @@ export default function ManageProfile() {
 					<div className="flex items-center sm:gap-24 py-5 justify-between ">
 						<h1 className="text-sm font-medium w-36">Email</h1>
 						<div className="flex-1 flex justify-between items-center sm:pl-3  ">
-							<p className="text-sm">{data?.email}</p>
+							<p className="text-sm">example@gmail</p>
 						</div>
 					</div>
 					<div className="flex items-start py-5 gap-2 sm:gap-24 ">
@@ -84,11 +79,9 @@ export default function ManageProfile() {
 						<div className="flex-1 space-y-5 ">
 							<div className="flex items-center gap-2 px-3">
 								<AuthProviderIcon />
-								<p className="capitalize">
-									{data?.app_metadata.provider}
-								</p>
+								<p className="capitalize">email</p>
 								<p className="text-sm text-gray-400">
-									{data?.user_metadata.user_name}
+									SupaAuth
 								</p>
 							</div>
 						</div>
