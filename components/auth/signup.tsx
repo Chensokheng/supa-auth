@@ -128,7 +128,11 @@ export default function SignUp({ redirectTo }: { redirectTo: string }) {
 	}
 
 	return (
-		<div className=" whitespace-nowrap p-5 space-x-5 overflow-hidden  items-center align-top  ">
+		<div
+			className={` whitespace-nowrap p-5 space-x-5 overflow-hidden  items-center align-top   ${
+				isPending ? "animate-pulse" : ""
+			}`}
+		>
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}

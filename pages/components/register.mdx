@@ -27,6 +27,13 @@ This will do:
 npx shadcn-ui@latest add input-otp && npx shadcn-ui@latest add form && npx shadcn-ui@latest add input && npm i react-icons resend sonner && npm install react-email @react-email/components -E
 ```
 
+Don't forget to import this in your layout.
+
+```js copy
+import { Toaster } from "sonner";
+<Toaster />;
+```
+
 ## Skip dependencies
 
 If you have all dependencies you can skip it by do this
