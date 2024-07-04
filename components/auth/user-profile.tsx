@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import React, { useTransition } from "react";
 import {
 	Popover,
