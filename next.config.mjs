@@ -1,6 +1,15 @@
 import nextra from "nextra";
 
+/** @type {import('next').NextConfig} */
 const nextConfig = {
+	images: {
+		remotePatterns: [
+			{
+				hostname: "avatars.githubusercontent.com",
+				protocol: "https",
+			},
+		],
+	},
 };
 
 const withNextra = nextra({
@@ -9,4 +18,3 @@ const withNextra = nextra({
 });
 
 export default withNextra(nextConfig);
-

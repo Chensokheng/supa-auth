@@ -10,7 +10,6 @@ export default function page() {
 			<Link href="/installation">
 				<Button variant={"link"}>Docs</Button>
 			</Link>
-			<UserProfile />
 		</div>
 	);
 }

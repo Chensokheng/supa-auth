@@ -11,7 +11,6 @@ export default function useUser() {
 			const supabase = createSupabaseBrowser();
 			const { data } = await supabase.auth.getUser();
 			if (data.user) {
-				// fetch user information profile
 				return data.user;
 			}
 			return {} as User;

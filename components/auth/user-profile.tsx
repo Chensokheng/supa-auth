@@ -14,11 +14,13 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import useUser from "@/app/hook/useUser";
+import ManageProfile from "./manage-profile";
+import Avatar from "./Avatar";
 
 export default function UserProfile() {
 	const [isSignOut, startSignOut] = useTransition();
 	const router = useRouter();
-	const { data, isFetching } = useUser();
+	const { data } = useUser();
 
 	const signout = () => {
 		startSignOut(async () => {
@@ -29,53 +31,43 @@ export default function UserProfile() {
 	};
 
 	return (
-		<div>
+		<div className="w-full">
 			<Popover>
 				<PopoverTrigger>
-					<div className=" border w-10 h-10    grid place-content-center rounded-full hover:scale-105 transition-all">
-						<p className="text-4xl -translate-y-1">
-							{data?.email?.[0]}
-						</p>
-					</div>
-					{/* <Image
-						src={"/supabase.png"}
-						alt=""
-						width={50}
-						height={50}
-						className={cn(
-							" rounded-full border p-1 hover:scale-105 transition-all duration-500",
-							isFetching
-								? "opacity-0 translate-y-2"
-								: "opacity-1 translate-y-0"
-						)}
-					/> */}
+					<Avatar />
 				</PopoverTrigger>
-				<PopoverContent align="end" className="w-[30rem]">
+				<PopoverContent align="end" className="w-[90%] sm:w-[30rem]">
 					<div
-						className={cn("flex gap-5 items-start", {
-							"animate-pulse": isSignOut,
-						})}
+						className={cn(
+							"flex gap-5 items-start w-[90%] sm:w-full",
+							{
+								"animate-pulse": isSignOut,
+							}
+						)}
 					>
-						<div className=" border w-10 h-10    grid place-content-center rounded-full hover:scale-105 transition-all">
-							<p className="text-4xl -translate-y-1">
-								{data?.email?.[0]}
-							</p>
+						<div className="w-10">
+							<Avatar />
 						</div>
 						<div className="space-y-5 w-full flex-1">
 							<div>
 								<h1>{data?.email}</h1>
 							</div>
 
-							<div className="flex gap-2 w-full">
+							<div className="flex gap-2 w-full pr-3 sm:pr-0">
 								<Button
-									className="w-1/2 h-9  rounded-xl flex items-center justify-center gap-2 text-gray-600 text-sm"
+									className="w-1/2 h-9  rounded-xl flex items-center justify-center gap-2 text-gray-600 dark:text-gray-200 text-sm"
 									variant="outline"
+									onClick={() => {
+										document
+											.getElementById("manage-profile")
+											?.click();
+									}}
 								>
 									<IoMdSettings className="size-5" />
 									Manage Account
 								</Button>
 								<Button
-									className="w-1/2 h-9  rounded-xl flex items-center justify-center gap-2 text-gray-600 text-sm"
+									className=" w-1/2 h-9  rounded-xl flex items-center justify-center gap-2 text-gray-600 dark:text-gray-200 text-sm"
 									variant="outline"
 									onClick={signout}
 								>
@@ -91,6 +83,7 @@ export default function UserProfile() {
 					</div>
 				</PopoverContent>
 			</Popover>
+			<ManageProfile />
 		</div>
 	);
 }
