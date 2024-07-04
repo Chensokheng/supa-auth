@@ -1,0 +1,34 @@
+# User Profile
+
+import UserProfile from "../../components/ui/auth/user-profile";
+
+export const Layout = () => {
+	return (
+		<div className="py-10">
+			<UserProfile />
+		</div>
+	);
+};
+
+<Layout />
+
+# Installation
+
+```sh copy
+npx supaauth@latest add --component user-profile
+```
+
+## What is this cmd will do?
+
+1. Create 3 component files `user-profile`, `avatar`, `manage-user`
+2. Install and Create `React Query` Provider. Make sure you import and use it inside your layout
+
+```ts
+<QueryClientProvider>
+	....
+	{children}
+	....
+</QueryClientProvider>
+```
+
+3. Create Hook folder, That's going to have `useUser` hook that you can use for to get user information
