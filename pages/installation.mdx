@@ -22,4 +22,11 @@ Add the following lines to your .env file, replacing the placeholders with your 
 ```sh copy
 NEXT_PUBLIC_SUPABASE_URL=<your_supabase_project_url>
 NEXT_PUBLIC_SUPABASE_ANON_KEY=<your_supabase_anon_key>
+SUPABAE_ADMIN=
+RESEND_API_KEY=
+RESEND_DOMAIN=
 ```
+
+`SUPABAE_ADMIN` is service role secret inside your supabase project. This key has the ability to bypass Row Level Security. Never share it publicly.
+
+`RESEND_API_KEY` && `RESEND_DOMAIN` is needed to use Resend to sending email to user. You can checkout more here: https://resend.com/home . Checkout this tutorial for more: https://www.youtube.com/watch?v=fEeksraKfJI&t=4s
